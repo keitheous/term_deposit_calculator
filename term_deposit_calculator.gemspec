@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors = ["keitheous"]
   spec.email = ["i.am.keith.chong@gmail.com"]
 
-  spec.summary = ""
-  spec.description = ""
+  spec.summary = "Term Deposit Calculator"
+  spec.description = "A CLI tool that calculates interest paid for a term deposit when a user specifies the starting amount, interest rates, and investment period."
   spec.required_ruby_version = ">= 3.1.0"
 
   gemspec = File.basename(__FILE__)
