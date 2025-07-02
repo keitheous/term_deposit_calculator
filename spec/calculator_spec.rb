@@ -1,4 +1,5 @@
-require 'term_deposit_calculator/calculator'
+# frozen_string_literal: true
+
 require 'bigdecimal'
 
 def dollar_amount(big_decimal_dollar)

@@ -1,4 +1,4 @@
-require 'term_deposit_calculator/cli'
+# frozen_string_literal: true
 
 RSpec.describe TermDepositCalculator::CLI do
   let(:fake_money_class) do

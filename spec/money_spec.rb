@@ -1,4 +1,4 @@
-require 'term_deposit_calculator/money'
+# frozen_string_literal: true
 
 RSpec.describe TermDepositCalculator::Money do
   let(:money) { described_class.new(100.00) }
