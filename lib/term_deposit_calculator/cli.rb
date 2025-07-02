@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TermDepositCalculator
   class CLI
     attr_reader :calculator_class, :money_class

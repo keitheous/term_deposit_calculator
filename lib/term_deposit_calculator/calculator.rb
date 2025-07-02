@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TermDepositCalculator
   class Calculator
     attr_reader :interest_paid_per_year, :investment_term_years
