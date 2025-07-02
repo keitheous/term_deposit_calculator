@@ -2,6 +2,25 @@
 
 module TermDepositCalculator
   class CLI
+
+    PROMPTS = {
+      starting_amount: {
+        message: 'Enter starting amount (example, enter 3500.00 for $3500.00): ',
+        type: :float,
+        convert: ->(val, money_class) { money_class.new('%0.2f' % val.to_f) }
+      },
+      interest_rate: {
+        message: 'Enter interest rate (example, enter 1.5 for 1.50%): ',
+        type: :float,
+        convert: ->(val, _) { val.to_f / 100.0 }
+      },
+      investment_term_months: {
+        message: 'Enter the number of months for investment (example, enter 24 for two years): ',
+        type: :integer,
+        convert: ->(val, _) { val.to_i }
+      }
+    }.freeze
+
     attr_reader :calculator_class, :money_class
 
     def initialize(calculator_class, money_class)
@@ -10,47 +29,35 @@ module TermDepositCalculator
     end
 
     def run
-      starting_amount_input = prompt("Enter starting amount (example, enter 3500.00 for $3500.00): ")
+      results = {}
 
-      valid_starting_amount = validate_and_convert(
-        user_input: starting_amount_input,
-        acceptable_type: :float,
-        conversionMethod: -> (starting_amount) { money_class.new('%0.2f' % starting_amount.to_f) }
-      )
-      
-      return print_invalid_input_exit_message(starting_amount_input, :float) unless valid_starting_amount
+      PROMPTS.each do |key, config|
+        input = prompt(config[:message])
 
-      interest_rate_input = prompt("Enter interest rate (example, enter 1.5 for 1.50%): ")
+        validated = validate_and_convert(
+          user_input: input,
+          acceptable_type: config[:type],
+          conversionMethod: -> (value) { config[:convert].call(value, money_class) }
+        )
 
-      valid_interest_rate = validate_and_convert(
-        user_input: interest_rate_input,
-        acceptable_type: :float,
-        conversionMethod: -> (interest_rate) { interest_rate / 100.0 }
-      )
+        unless validated
+          return print_invalid_input_exit_message(input, config[:type])
+        end
 
-      return print_invalid_input_exit_message(interest_rate_input, :float) unless valid_interest_rate
+        results[key] = validated
+      end
 
-      investment_term_months_input = prompt("Enter the number of months for investment (example, enter 24 for two years): ")
-
-      valid_investment_term_months = validate_and_convert(
-        user_input: investment_term_months_input,
-        acceptable_type: :integer,
-        conversionMethod: -> (months) { months }
-      )
-
-      return print_invalid_input_exit_message(investment_term_months_input, :integer) unless valid_investment_term_months
-      
       term_deposit = calculator_class.new(
-        valid_starting_amount,
-        valid_interest_rate,
-        valid_investment_term_months
+        results[:starting_amount],
+        results[:interest_rate],
+        results[:investment_term_months]
       )
 
       for period in ['at maturity', 'per year', 'per quarter', 'per month']
         print_interest_paid_message(period, term_deposit.send("calculate_interest_paid_#{period.tr(" ", "_")}"))
       end
 
-      puts "Thank you, have a nice day!"
+      puts 'Thank you, have a nice day!'
     end
 
     private
