@@ -57,3 +57,9 @@ Steps to install dependencies and set up the project.
    # Or run a specific test file
    bundle exec rspec spec/cli_spec.rb
    ```
+
+3. To run rubocop for linting:
+
+   ```
+   bundle exec rubocop
+   ```
