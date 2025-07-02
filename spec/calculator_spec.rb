@@ -8,7 +8,7 @@ end
 
 RSpec.describe TermDepositCalculator::Calculator do
   let(:investment_term_months) { 36 }
-  let(:starting_amount) { BigDecimal(10_000) }
+  let(:starting_amount) { BigDecimal(10000) }
   let(:interest_rate) { 0.011 }
 
   let(:calculator) { described_class.new(starting_amount, interest_rate, investment_term_months) }

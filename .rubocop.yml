@@ -13,6 +13,10 @@ Layout/LineLength:
   Exclude:
     - "spec/**/*_spec.rb"
 
+Style/NumericLiterals:
+  Exclude:
+    - "spec/**/*_spec.rb"
+
 Metrics/AbcSize:
   Max: 25 # or whatever feels acceptable
 
