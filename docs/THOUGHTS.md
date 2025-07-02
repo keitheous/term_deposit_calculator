@@ -61,7 +61,26 @@ These were some of my thoughts and considerations, curious to know yours!
 ### Assumptions
 
 1. I have built a `Term Deposit Calculator` with an `Income Stream` Interest Payment Type. Not `Re-invest` Interest Payment Type.
-2. We are only dealing with a sub unit currency format that uses uses 2 decimal places (.00) i.e AUD, USD, SGD or MYR.
+
+2. We are only dealing with subunit currency formats that use two decimal places (e.g., AUD, USD, SGD, MYR).
+
+3. I haven’t included currency handling in the code. While I could have used gems like `money` or `monetize` for more robust support, I opted for BigDecimal for lightweight simplicity, since advanced currency features weren’t required.
+
+4. The CLI class could be broken down further by extracting the summary output logic into a separate Formatter class. For example, instead of looping directly in the CLI like this:
+
+   ```
+    ['at maturity', 'per year', 'per quarter', 'per month'].each do | period |
+      print_interest_paid_message(period, term_deposit.send("calculate_interest_paid_#{period.tr(' ', '_')}"))
+    end
+   ```
+
+   the CLI could instantiate the formatter (e.g., `formatter = Formatter.new(term_deposit)`) and call `formatter.print_summary`.
+
+   This separation would allow the formatter to evolve independently without affecting the rest of the codebase. However, I’ve chosen to keep the output logic in the CLI for now, alongside the other puts and print statements, to keep things simple.
+
+5. When the investment term is less than a year or a quarter, the current implementation still prints the interest paid per month, quarter, and year. For example, if the investment term is 3 months, it doesn’t really make sense to display the interest paid per year.
+
+   I could have implemented a safeguard to check the duration of the investment term and suppress irrelevant outputs. However, this was omitted as it wasn't part of the requirements, and I wanted to avoid overengineering the solution. Let's assume that the user is optimistic about investing for more than a year!
 
 ### Screenshots
 
