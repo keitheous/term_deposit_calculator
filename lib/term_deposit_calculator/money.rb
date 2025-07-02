@@ -10,12 +10,12 @@ module TermDepositCalculator
       @amount = BigDecimal(amount.to_s)
     end
 
-    def *(multiplier)
-      Money.new(@amount * multiplier)
+    def *(other)
+      Money.new(@amount * other)
     end
 
-    def /(divisor)
-      Money.new(@amount / divisor)
+    def /(other)
+      Money.new(@amount / other)
     end
 
     def to_s
